@@ -1,0 +1,29 @@
+att18 = status
+att8 = phased
+att13 = stock
+
+	select LCSSKU.att13 as 'Stock Number', LCSSeason.att3 as 'Season Year', LCSSeason.att4 as 'Season', LCSSeason.att1 as 'Season Name', 
+ wcprod.LCSSeasonProductLink.att18 as 'SKU CarryOver Status', spl2.att18 as 'Product CarryOver Status', 
+ wcprod.LCSSeasonProductLink.att8 as 'Phased' from 
+  wcprod.LCSSeason, wcprod.LCSSeasonProductLink, wcprod.LCSSeasonProductLink spl2, 
+wcprod.LCSSKU   where wcprod.LCSSeason.latestiterationInfo = 1 and wcprod.LCSSKU.latestiterationInfo = 1 
+and wcprod.LCSSeasonProductLink.skuMasterId = wcprod.LCSSKU.idA3masterReference and  wcprod.LCSSKU.versionIdA2versionInfo='A' 
+and wcprod.LCSSeasonProductLink.seasonRevId = wcprod.LCSSeason.branchIditerationInfo and wcprod.LCSSeasonProductLink.seasonLinkType = 'SKU' 
+and wcprod.LCSSeasonProductLink.effectOutDate is null and spl2.seasonLinkType = 'PRODUCT' 
+and spl2.seasonRevId = wcprod.LCSSeason.branchIditerationInfo and  wcprod.LCSSeasonProductLink.productARevId = spl2.productARevId 
+and spl2.effectOutDate is null 
+
+
+select * , (
+CASE WHEN SKU_Status IS NULL THEN Product_Status ELSE SKU_Status END ) as 'Status' 
+FROM 
+(	select LCSSKU.att13 as 'Stock Number', LCSSeason.att3 as 'Season Year', LCSSeason.att4 as 'Season', LCSSeason.att1 as 'Season Name', 
+ wcprod.LCSSeasonProductLink.att18 as 'SKU_Status', spl2.att18 as 'Product_Status', 
+ wcprod.LCSSeasonProductLink.att8 as 'Phased' from 
+  wcprod.LCSSeason, wcprod.LCSSeasonProductLink, wcprod.LCSSeasonProductLink spl2, 
+wcprod.LCSSKU   where wcprod.LCSSeason.latestiterationInfo = 1 and wcprod.LCSSKU.latestiterationInfo = 1 
+and wcprod.LCSSeasonProductLink.skuMasterId = wcprod.LCSSKU.idA3masterReference and  wcprod.LCSSKU.versionIdA2versionInfo='A' 
+and wcprod.LCSSeasonProductLink.seasonRevId = wcprod.LCSSeason.branchIditerationInfo and wcprod.LCSSeasonProductLink.seasonLinkType = 'SKU' 
+and wcprod.LCSSeasonProductLink.effectOutDate is null and spl2.seasonLinkType = 'PRODUCT' 
+and spl2.seasonRevId = wcprod.LCSSeason.branchIditerationInfo and  wcprod.LCSSeasonProductLink.productARevId = spl2.productARevId 
+and spl2.effectOutDate is null ) X
