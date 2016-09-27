@@ -1,0 +1,2 @@
+CREATE VIEW V_PURCHASE_STATUS_BO as ( select idA2A2 as 'ID', att2 as 'DESCRIPTION' , att3 as 'STOCK_NUMBER', att4 as 'PURCHASE_STATUS' from wcprod.LCSLifecycleManaged
+ where flexTypeIdPath in ( select typeIdPath from wcprod.FlexType where typeName like 'PStatus'));
